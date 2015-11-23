@@ -1,0 +1,27 @@
+
+body {
+    max-width: 300px;
+    margin: 0 auto;
+    margin-top: 100px;
+}
+.container {
+    list-style: none;
+    border-style: solid;
+    border-width: 3px;
+    border-color: gray;
+}
+.item {
+    display: block;
+    text-decoration: none;
+    color: black;
+    border-style: solid;
+    border-width: 2px;
+    border-color: lightslategrey;
+    margin: 5px;
+    /* padding-left: 10px; */
+    /* text-align: center; */
+}
+.item img {
+    vertical-align: middle;
+    margin: 6px;
+}
