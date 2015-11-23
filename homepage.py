@@ -19,17 +19,15 @@ def get_stuff():
     cur = conn.cursor()
 
     # I don't know if that's the proper way to do SQL
-    cur.execute("select moz_bookmarks.title, moz_places.url, mime_type, data "
+    cur.execute("select moz_bookmarks.title, moz_places.title, moz_places.url, mime_type, data "
                 "from moz_places "
                 "join moz_bookmarks on moz_bookmarks.fk=moz_places.id "
                 "join moz_favicons on moz_favicons.id=moz_places.favicon_id "
                 "where moz_bookmarks.parent=3 and moz_bookmarks.type=1")
 
     bookmarks = cur.fetchall()
-    bookmarks = [(name, url, mime, data) if name else (url, url, mime, data)
-                 for name, url, mime, data in bookmarks]
-    bookmarks = [(name, url, mime, b64encode(data).decode('utf8'))
-                 for name, url, mime, data in bookmarks]
+    bookmarks = [(name or name2, url, mime, b64encode(data).decode('utf8'))
+                 for name, name2, url, mime, data in bookmarks]
     return bookmarks
 
 def render(bookmarks):
