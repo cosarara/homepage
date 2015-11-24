@@ -19,11 +19,12 @@ def get_bookmarks(cur, parent):
     cur.execute("select moz_bookmarks.title, moz_places.title, moz_places.url, mime_type, data "
                 "from moz_places "
                 "join moz_bookmarks on moz_bookmarks.fk=moz_places.id "
-                "join moz_favicons on moz_favicons.id=moz_places.favicon_id "
+                "left join moz_favicons on moz_favicons.id=moz_places.favicon_id "
                 "where moz_bookmarks.parent=:parent and moz_bookmarks.type=1",
                 {"parent": parent})
     bookmarks = cur.fetchall()
-    bookmarks = [Bookmark(name or name2, url, mime, b64encode(data).decode('utf8'))
+    bookmarks = [Bookmark(name or name2, url, mime,
+                          b64encode(data).decode('utf8') if data else "")
                  for name, name2, url, mime, data in bookmarks]
     return bookmarks
 
@@ -34,10 +35,13 @@ def get_dirs(cur):
     dirs = cur.fetchall()
     return dirs
 
-def get_stuff():
+def get_conn():
     uri = "file:{}?mode=ro".format(DB)
     conn = sqlite3.connect(uri, uri=True)
+    return conn
 
+def get_stuff():
+    conn = get_conn()
     cur = conn.cursor()
 
     # I don't know if that's the proper way to do SQL

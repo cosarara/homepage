@@ -21,7 +21,11 @@
                     <div class="name">${dir_name}</div>
                     % for name, url, mime, favicon_data in marks:
                         <a href="${url}" class="item">
+                          % if favicon_data:
                             <img src="data:${mime};base64,${favicon_data}">
+                          % else:
+                            <div class="no-image"></div>
+                          % endif
                             ${name}
                         </a>
                     % endfor
