@@ -1,16 +1,10 @@
-html, body {
-    height: 100%;
+html {
+    height:100%;
 }
 body {
-    /* max-width: 300px; */
-    /* margin: 0 auto; */
-    /* margin-top: 100px; */
-    /* margin-bottom: 100px; */
+    min-height:100%;
     background-color: #222222;
     font-family: terminus;
-    /* position: relative; */
-    /* top: 50%; */
-    /* transform: translateY(-50%); */
     margin: 0;
     display: flex;
     align-items: center;
@@ -20,9 +14,7 @@ body {
     display: flex;
 }
 .container {
-    /* max-width: 50%; */
     width: 300px;
-    /* border-style: solid; */
     border-width: 3px;
     border-color: #6F6F6F;
     color: #ffffff;
@@ -40,12 +32,6 @@ body {
     padding: 2px;
     padding-left: 7px;
     padding-right: 7px;
-    /* border-style: solid; */
-    /* border-width: 2px; */
-    /* border-color: #3F3F3F; */
-    /* background-color: #101010; */
-    /* padding-left: 10px; */
-    /* text-align: center; */
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
