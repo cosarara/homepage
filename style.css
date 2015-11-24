@@ -16,6 +16,9 @@ body {
     align-items: center;
     justify-content: center;
 }
+.outer {
+    display: flex;
+}
 .container {
     /* max-width: 50%; */
     width: 300px;
@@ -59,21 +62,29 @@ body {
     margin: 6px;
 }
 .collapse > * + *{
-  display:none;
+    display:none;
 }
 .collapse > *{
-  cursor:pointer;
+    cursor:pointer;
 }
 .collapse:focus{
-  outline:none;
+    outline:none;
 }
 .collapse:focus > * + *{
-  display:block; 
+    display:block; 
 }
 .collapse .name::before {
     content: "> ";
 }
 h1 {
     color: #888888;
-    margin: 20px;
+    margin-top: 0;
+    margin-right: 20px;
+    /* margin-top: -10px; */
+    vertical-align: top;
+    align-self: flex-start;
+}
+.vline {
+    width: 2px;
+    background-color: #888888;
 }

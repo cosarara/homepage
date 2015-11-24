@@ -6,7 +6,9 @@
         <link href="style.css" rel="stylesheet" title="things">
     </head>
     <body>
+      <div class="outer">
         <h1>Home</h1>
+        <div class="vline"></div>
         <div class="container">
             % for name, url, mime, favicon_data in bmarks[0][1]:
                 <a href="${url}" class="item">
@@ -25,6 +27,7 @@
                     % endfor
                 </div>
             % endfor
-            <div>
+        <div>
+      </div>
     </body>
 </html>
