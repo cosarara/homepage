@@ -18,11 +18,16 @@ body {
 }
 .container {
     /* max-width: 50%; */
-    max-width: 300px;
-    list-style: none;
+    width: 300px;
     /* border-style: solid; */
     border-width: 3px;
     border-color: #6F6F6F;
+    color: #ffffff;
+}
+.name {
+    margin: 2px;
+    padding-left: 7px;
+    padding-right: 7px;
 }
 .item {
     display: block;
@@ -42,6 +47,9 @@ body {
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+.collapse .item {
+    padding-left: 15px;
+}
 .item:hover {
     background-color: #101010;
 }
@@ -49,4 +57,23 @@ body {
     display: none;
     vertical-align: middle;
     margin: 6px;
+}
+.collapse > * + *{
+  display:none;
+}
+.collapse > *{
+  cursor:pointer;
+}
+.collapse:focus{
+  outline:none;
+}
+.collapse:focus > * + *{
+  display:block; 
+}
+.collapse .name::before {
+    content: "> ";
+}
+h1 {
+    color: #888888;
+    margin: 20px;
 }

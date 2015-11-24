@@ -8,9 +8,31 @@ from mako.lookup import TemplateLookup
 import sqlite3
 import glob
 import os.path
+from collections import namedtuple
 
 DB = glob.glob(os.path.expanduser('~/.mozilla/firefox/') +
                '*.default/places.sqlite')[0]
+
+Bookmark = namedtuple('Bookmark', ['name', 'url', 'mime', 'data'])
+
+def get_bookmarks(cur, parent):
+    cur.execute("select moz_bookmarks.title, moz_places.title, moz_places.url, mime_type, data "
+                "from moz_places "
+                "join moz_bookmarks on moz_bookmarks.fk=moz_places.id "
+                "join moz_favicons on moz_favicons.id=moz_places.favicon_id "
+                "where moz_bookmarks.parent=:parent and moz_bookmarks.type=1",
+                {"parent": parent})
+    bookmarks = cur.fetchall()
+    bookmarks = [Bookmark(name or name2, url, mime, b64encode(data).decode('utf8'))
+                 for name, name2, url, mime, data in bookmarks]
+    return bookmarks
+
+def get_dirs(cur):
+    cur.execute("select id, title "
+                "from moz_bookmarks "
+                "where parent=3 and type=2")
+    dirs = cur.fetchall()
+    return dirs
 
 def get_stuff():
     uri = "file:{}?mode=ro".format(DB)
@@ -19,16 +41,9 @@ def get_stuff():
     cur = conn.cursor()
 
     # I don't know if that's the proper way to do SQL
-    cur.execute("select moz_bookmarks.title, moz_places.title, moz_places.url, mime_type, data "
-                "from moz_places "
-                "join moz_bookmarks on moz_bookmarks.fk=moz_places.id "
-                "join moz_favicons on moz_favicons.id=moz_places.favicon_id "
-                "where moz_bookmarks.parent=3 and moz_bookmarks.type=1")
-
-    bookmarks = cur.fetchall()
-    bookmarks = [(name or name2, url, mime, b64encode(data).decode('utf8'))
-                 for name, name2, url, mime, data in bookmarks]
-    return bookmarks
+    bookmarks = get_bookmarks(cur, 3)
+    dirs = [(title, get_bookmarks(cur, str(dir_id))) for dir_id, title in get_dirs(cur)]
+    return [('Home', bookmarks)] + dirs
 
 def render(bookmarks):
     lookup = TemplateLookup(directories=['.'], strict_undefined=True)
