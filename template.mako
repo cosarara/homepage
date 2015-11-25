@@ -17,21 +17,24 @@
                 </a>
             % endfor
             % for dir_name, marks in bmarks[1:]:
-                <div class="collapse" tabindex="1">
-                    <div class="name">${dir_name}</div>
-                    % for name, url, mime, favicon_data in marks:
-                        <a href="${url}" class="item">
-                          % if favicon_data:
-                            <img src="data:${mime};base64,${favicon_data}">
-                          % else:
-                            <div class="no-image"></div>
-                          % endif
-                            ${name}
-                        </a>
-                    % endfor
+                <div class="clickable">
+                    <label class="name" for="${dir_name}">${dir_name}</label>
+                    <input type="checkbox" class="collapse-input" id="${dir_name}" />
+                    <div class="collapse">
+                        % for name, url, mime, favicon_data in marks:
+                            <a href="${url}" class="item">
+                                % if favicon_data:
+                                    <img src="data:${mime};base64,${favicon_data}">
+                                % else:
+                                    <div class="no-image"></div>
+                                % endif
+                                ${name}
+                            </a>
+                        % endfor
+                    </div>
                 </div>
             % endfor
-        <div>
+        </div>
       </div>
     </body>
 </html>
