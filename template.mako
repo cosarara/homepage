@@ -12,7 +12,7 @@
         <div class="container">
             % for name, url, mime, favicon_data in bmarks[0][1]:
                 <a href="${url}" class="item">
-                    <img src="data:${mime};base64,${favicon_data}">
+                    <img src="data:${mime};base64,${favicon_data}" alt="">
                     ${name}
                 </a>
             % endfor
@@ -24,7 +24,7 @@
                         % for name, url, mime, favicon_data in marks:
                             <a href="${url}" class="item">
                                 % if favicon_data:
-                                    <img src="data:${mime};base64,${favicon_data}">
+                                    <img src="data:${mime};base64,${favicon_data}" alt="">
                                 % else:
                                     <div class="no-image"></div>
                                 % endif

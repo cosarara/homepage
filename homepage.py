@@ -8,12 +8,20 @@ from mako.lookup import TemplateLookup
 import sqlite3
 import glob
 import os.path
+import re
 from collections import namedtuple
 
 DB = glob.glob(os.path.expanduser('~/.mozilla/firefox/') +
                '*.default/places.sqlite')[0]
 
 Bookmark = namedtuple('Bookmark', ['name', 'url', 'mime', 'data'])
+
+def dname(url):
+    m = re.search(r"://(?:www\.)?(.*?)\.(?:.*?)/", url)
+    #m = re.search(r"://(.*?)/", url)
+    if m is None:
+        return url
+    return m.group(1)
 
 def get_bookmarks(cur, parent):
     cur.execute("select moz_bookmarks.title, moz_places.title, moz_places.url, mime_type, data "
@@ -23,7 +31,7 @@ def get_bookmarks(cur, parent):
                 "where moz_bookmarks.parent=:parent and moz_bookmarks.type=1",
                 {"parent": parent})
     bookmarks = cur.fetchall()
-    bookmarks = [Bookmark(name or name2, url, mime,
+    bookmarks = [Bookmark(name or name2 or dname(url), url, mime,
                           b64encode(data).decode('utf8') if data else "")
                  for name, name2, url, mime, data in bookmarks]
     return bookmarks
